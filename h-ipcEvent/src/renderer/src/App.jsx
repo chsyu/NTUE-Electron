@@ -5,7 +5,6 @@ function App() {
   const ipcRenderer = window.electron.ipcRenderer
 
   useEffect(() => {
-    console.log(ipcRenderer, 'useEffect...')
     window.electron.ipcRenderer.on('menuInfo', (_, message) => {
       setMenuInfo(message)
     })
