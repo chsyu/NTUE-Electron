@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 function App() {
   const [menuInfo, setMenuInfo] = useState('Loading')
+  const [filePathInfo, setFilePathInfo] = useState('')
   const { ipcRenderer } = window.electron
 
   const onSaveToFile = async () => {
@@ -12,6 +13,9 @@ function App() {
   useEffect(() => {
     ipcRenderer.on('menuInfo', (_, message) => {
       setMenuInfo(message)
+    })
+    ipcRenderer.on('filePathInfo', (_, filePath) => {
+      setFilePathInfo(filePath)
     })
   }, [])
   return (
@@ -30,6 +34,7 @@ function App() {
       >
         save to file
       </div>
+      <h2>file write to {filePathInfo} </h2>
     </div>
   )
 }

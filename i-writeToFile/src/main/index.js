@@ -43,6 +43,7 @@ function createWindow() {
 
   ipcMain.handle('writeFile', (event, arg) => {
     const filePath = join(__dirname, arg.fileName)
+    mainWindow.webContents.send('filePathInfo', filePath)
     fs.writeFile(filePath, arg.data, (err) => {
       if (err) {
         console.error(err)
