@@ -42,7 +42,7 @@ function createWindow() {
   }
 
   ipcMain.handle('writeFile', (event, arg) => {
-    const filePath = join(__dirname, arg.fileName)
+    const filePath = `${app.getPath('userData')}/${arg.fileName}`
     mainWindow.webContents.send('filePathInfo', filePath)
     fs.writeFile(filePath, arg.data, (err) => {
       if (err) {
@@ -55,7 +55,7 @@ function createWindow() {
   })
 
   ipcMain.handle('readFile', (event, arg) => {
-    const filePath = join(__dirname, arg.fileName)
+    const filePath = `${app.getPath('userData')}/${arg.fileName}`
     return fs.readFile(filePath, 'utf-8')
   })
 }
