@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectFileName, selectHasInit } from '../redux/fileSlice'
-import { setFileName } from '../redux/fileSlice'
+import { setFileName, setHasInit } from '../redux/fileSlice'
 
 function Home() {
   const [menuInfo, setMenuInfo] = useState('Loading')
@@ -38,7 +38,7 @@ function Home() {
 
   useEffect(() => {
       if (!hasInit) {
-         console.log('init state')
+         dispatch(setHasInit(true))
          onInitState()
       }
    }, [])

@@ -23,7 +23,7 @@ export const selectFileName = (state) => state.file.fileName;
 export const selectHasInit = (state) => state.file.hasInit;
 
 // export actions to global
-export const { setFileName } = fileSlice.actions;
+export const { setFileName, setHasInit } = fileSlice.actions;
 
 // export reducer to global
 export default fileSlice.reducer;
