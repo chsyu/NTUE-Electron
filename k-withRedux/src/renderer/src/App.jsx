@@ -19,12 +19,6 @@ function App() {
     setFileContent(content.menuInfo)
   }
 
-  window._fs.readFileContent((event, val) => {
-    console.log('event', event)
-    console.log('val', val)
-    setFileContent(val);
-  })
-
   useEffect(() => {
     ipcRenderer.on('menuInfo', (_, message) => {
       setMenuInfo(message)

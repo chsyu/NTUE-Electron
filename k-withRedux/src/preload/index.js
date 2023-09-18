@@ -16,8 +16,6 @@ if (process.contextIsolated) {
       readFile: (arg) => {
         return ipcRenderer.invoke('readFile', arg)
       },
-      readFileContent: (callback) => ipcRenderer.on('fileContent', callback),
-
     })
   } catch (error) {
     console.error(error)
