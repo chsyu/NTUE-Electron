@@ -1,64 +1,13 @@
-import { useState, useEffect } from 'react'
+import Home from './pages/Home'
+import { Provider } from 'react-redux'
+import { store } from './redux/store'
 
 function App() {
-  const [menuInfo, setMenuInfo] = useState('Loading')
-  const [filePathInfo, setFilePathInfo] = useState('')
-  const [fileContent, setFileContent] = useState('')
-  const { ipcRenderer } = window.electron
 
-  const onSaveToFile = async () => {
-    const data = JSON.stringify({ menuInfo: menuInfo })
-    await window._fs.writeFile({ fileName: `${menuInfo}.txt`, data })
-  }
-
-  const onReadFile = async () => {
-    const data = (await window._fs.readFile({ fileName: `${menuInfo}.txt` })) || {
-      menuInfo: 'no data'
-    }
-    const content = JSON.parse(data)
-    setFileContent(content.menuInfo)
-  }
-
-  useEffect(() => {
-    ipcRenderer.on('menuInfo', (_, message) => {
-      setMenuInfo(message)
-    })
-    ipcRenderer.on('filePathInfo', (_, filePath) => {
-      setFilePathInfo(filePath)
-    })
-  }, [])
   return (
-    <div className="container">
-      <h1>{menuInfo} is clicked...</h1>
-      <div
-        style={{
-          marginTop: '20px',
-          border: '1px solid lightgray',
-          fontSize: '40px',
-          padding: '10px',
-          cursor: 'pointer',
-          textAlign: 'center'
-        }}
-        onClick={onSaveToFile}
-      >
-        save to file
-      </div>
-      <h2>file write to {filePathInfo} </h2>
-      <div
-        style={{
-          marginTop: '20px',
-          border: '1px solid lightgray',
-          fontSize: '40px',
-          padding: '10px',
-          cursor: 'pointer',
-          textAlign: 'center'
-        }}
-        onClick={onReadFile}
-      >
-        read from file
-      </div>
-      <h2>file content = {fileContent} </h2>
-    </div>
+    <Provider store={store}>
+      <Home />
+    </Provider>
   )
 }
 
