@@ -1,4 +1,4 @@
-const menu = (version, win) => [
+const menu = (version) => [
   {
     label: '記帳程式',
     submenu: [
@@ -13,24 +13,18 @@ const menu = (version, win) => [
     submenu: [
       {
         label: '課程視窗',
-        accelerator: 'CmdOrCtrl+t',
-        click: () => {
-          win.webContents.send('menuInfo', 'courses')
-        }
+        accelerator: 'CmdOrCtrl+c',
+        click: () => {}
       },
       {
         label: '教練視窗',
         accelerator: 'CmdOrCtrl+j',
-        click: () => {
-          win.webContents.send('menuInfo', 'coach')
-        }
+        click: () => {}
       },
       {
         label: '會員視窗',
-        accelerator: 'CmdOrCtrl+s',
-        click: () => {
-          win.webContents.send('menuInfo', 'students')
-        }
+        accelerator: 'CmdOrCtrl+p',
+        click: () => {}
       },
       {
         type: 'separator'

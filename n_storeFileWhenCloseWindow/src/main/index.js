@@ -1,12 +1,8 @@
-import { app, shell, BrowserWindow, Menu, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, Menu } from 'electron'
 import { join } from 'path'
-import fs from 'fs/promises'
-import os from 'os'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import menu from './menu'
 import icon from '../../resources/icon.png?asset'
-
-const  homedir = os.homedir()
 
 function createWindow() {
   // Create the browser window.
@@ -31,10 +27,8 @@ function createWindow() {
     return { action: 'deny' }
   })
 
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu(app.getVersion())))
 
-  // mainWindow.webContents.openDevTools()
-
-  Menu.setApplicationMenu(Menu.buildFromTemplate(menu(app.getVersion(), mainWindow)))
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
@@ -43,45 +37,6 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-  
-  ipcMain.handle('writeFile', (event, arg) => {
-    const filePath = `${homedir}/Desktop/${arg.fileName}`
-    mainWindow.webContents.send('filePathInfo', filePath)
-    try {
-      fs.writeFile(filePath, arg.data, (err) => {
-          if (err) {
-            console.error(err)
-            return
-          } else {
-            console.log('file saved')
-          }
-        })      
-    } catch (err) {
-      console.error(err)
-    } 
- 
-  })
-
-  ipcMain.handle('readFile', (event, arg) => {
-    const filePath = `${homedir}/Desktop/${arg.fileName}`
-    return fs.readFile(filePath, 'utf-8')
-  })
-
-  ipcMain.handle('closeWindow', () => {
-    ipcMain.removeAllListeners();
-    ipcMain.removeHandler('writeFile')
-    ipcMain.removeHandler('readFile')
-    ipcMain.removeHandler('closeWindow')
-    mainWindow.destroy();
-  })
-
-  mainWindow.on("close", (event) => {
-    event.preventDefault();
-    mainWindow.webContents.send('readyToClose')
-  });  
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
 }
 
 // This method will be called when Electron has finished
@@ -118,4 +73,3 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
-
