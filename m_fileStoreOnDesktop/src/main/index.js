@@ -7,7 +7,6 @@ import menu from './menu'
 import icon from '../../resources/icon.png?asset'
 
 const  homedir = os.homedir()
-console.log('homedir', homedir)
 
 function createWindow() {
   // Create the browser window.
@@ -33,7 +32,7 @@ function createWindow() {
   })
 
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(menu(app.getVersion(), mainWindow)))
 
@@ -44,24 +43,36 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-
+  
   ipcMain.handle('writeFile', (event, arg) => {
     const filePath = `${homedir}/Desktop/${arg.fileName}`
     mainWindow.webContents.send('filePathInfo', filePath)
-    fs.writeFile(filePath, arg.data, (err) => {
-      if (err) {
-        console.error(err)
-        return
-      } else {
-        console.log('file saved')
-      }
-    })
+    try {
+      fs.writeFile(filePath, arg.data, (err) => {
+          if (err) {
+            console.error(err)
+            return
+          } else {
+            console.log('file saved')
+          }
+        })      
+    } catch (err) {
+      console.error(err)
+    } 
+ 
   })
 
   ipcMain.handle('readFile', (event, arg) => {
     const filePath = `${homedir}/Desktop/${arg.fileName}`
     return fs.readFile(filePath, 'utf-8')
   })
+
+  mainWindow.on("closed", () => {
+    ipcMain.removeAllListeners();
+    ipcMain.removeHandler('writeFile')
+    ipcMain.removeHandler('readFile')
+    // mainWindow.destroy();
+  });  
 }
 
 // This method will be called when Electron has finished
