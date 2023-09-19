@@ -71,6 +71,7 @@ function createWindow() {
     ipcMain.removeAllListeners();
     ipcMain.removeHandler('writeFile')
     ipcMain.removeHandler('readFile')
+    ipcMain.removeHandler('closeWindow')
     mainWindow.destroy();
   })
 
