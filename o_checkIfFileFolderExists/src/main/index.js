@@ -11,7 +11,7 @@ const directoryPath = `${homedir}/Desktop/db`
 
 const checkFolder = async () => {
   try {
-    fs.access(directoryPath, _fs.constants.F_OK, (err) => {
+    fs.access(directoryPath, fs.constants.F_OK, (err) => {
       if (err) {
         console.log('The directory does not exist.');
         fs.mkdir(directoryPath, (err) => {
@@ -22,6 +22,7 @@ const checkFolder = async () => {
           console.log('The directory was created successfully!')
         })
       }
+
       console.log('The directory exists.')
     })
   } catch (err) {
@@ -30,6 +31,29 @@ const checkFolder = async () => {
 }
 
 checkFolder()
+
+
+// const checkFolder = async () => {
+//   try {
+//     fs.access(directoryPath, _fs.constants.F_OK, (err) => {
+//       if (err) {
+//         console.log('The directory does not exist.');
+//         fs.mkdir(directoryPath, (err) => {
+//           if (err) {
+//             console.error(err)
+//             return
+//           }
+//           console.log('The directory was created successfully!')
+//         })
+//       }
+//       console.log('The directory exists.')
+//     })
+//   } catch (err) {
+//     console.error(err)
+//   }
+// }
+
+// checkFolder()
 
 function createWindow() {
   // Create the browser window.
